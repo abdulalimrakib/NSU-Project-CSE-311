@@ -55,7 +55,7 @@ const register = async (req, res) => {
         password: hashedPassword,
         token,
       });
-      if (!uid) throw new Error(MSG_DUPLICATE_EMAIL_ERROR);
+      // if (!uid) throw new Error(MSG_DUPLICATE_EMAIL_ERROR);
 
       // creating a new user
       const isUserEntrySuccess = await createUser({
