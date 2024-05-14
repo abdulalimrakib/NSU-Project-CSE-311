@@ -55,13 +55,13 @@ const register = async (req, res) => {
         password: hashedPassword,
         token,
       });
-      // if (!uid) throw new Error(MSG_DUPLICATE_EMAIL_ERROR);
+      if (!uid) throw new Error(MSG_DUPLICATE_EMAIL_ERROR);
 
       // creating a new user
       const isUserEntrySuccess = await createUser({
         uid,
         name: `${firstName} ${lastName}`,
-        mobile: parseInt(mobile, 10),
+        mobile: parseInt(mobile),
         role: userType,
         address,
       });
@@ -139,16 +139,38 @@ const login = async (req, res) => {
       throw new Error(MSG_DATA_INSUFFICIENT_ERROR);
     }
 
-    const query = `SELECT * FROM Account
+    const query1 = `SELECT * FROM Account
     WHERE email = '${email}'`;
 
-    const user = await new Promise((resolve) => {
-      database.query(query, (error, result) => {
+    const user1 = await new Promise((resolve) => {
+      database.query(query1, (error, result) => {
         if (error) throw error;
         // id = result.insertId;
         resolve(result[0]);
       });
     });
+
+    const query2 = `SELECT * FROM User
+    WHERE uid = '${user1.uid}'`;
+
+    const user2 = await new Promise((resolve) => {
+      database.query(query2, (error, result) => {
+        if (error) throw error;
+        // id = result.insertId;
+        resolve(result[0]);
+      });
+    });
+
+    const user = {...user1, ...user2}
+    const response = {
+      uid: 5,
+      email: 'user4@gmail.com',
+      token: '5FgQzXDISk',
+      name: 'user4 user4',
+      mobile: 1234567890,
+      role: 'candidate',
+      address: 'Bangladesh'
+    }
 
     if (!user) throw Error(MSG_INVALID_CREDS);
     const isUserValid = isPasswordValid(password, user.password);
@@ -157,11 +179,11 @@ const login = async (req, res) => {
     responseData.status = "success";
     responseData.message = MSG_LOGIN_SUCCESS;
     responseData.data = {
+      ...response,
       token: user.token,
       uid: user.uid,
     };
 
-    console.log(responseData.data);
   } catch (error) {
     responseData.status = "failed";
     responseData.message = error.message;
