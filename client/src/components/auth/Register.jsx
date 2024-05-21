@@ -15,13 +15,14 @@ const Register = () => {
 
     if (name === "userType" && value === "recruiter") {
       setShowRecruiterFields(true);
-    } else {
+    } 
+    if(name === "userType" && (value === "" || value === "candidate")) {
       setShowRecruiterFields(false);
     }
-
     if (name === "userType" && value === "candidate") {
       setShowCandidateFields(true);
-    } else {
+    } 
+    if(name === "userType" && (value === "" || value === "recruiter")) {
       setShowCandidateFields(false);
     }
   };
@@ -34,10 +35,11 @@ const Register = () => {
           throw new Error("Not enough data, Please fill all the fields");
         } else {
           navigate("/login");
+          alert('successfully registered')
         }
       });
     } catch (error) {
-      console.log(error.message);
+      alert(error.message);
     }
   };
 
