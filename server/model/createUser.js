@@ -1,6 +1,7 @@
 const database = require("../config/DBConfig");
 
 const createUser = async (userData) => {
+  console.log(userData);
   const query = `INSERT INTO User (uid, name, mobile, role, address) 
       VALUES (
         '${userData.uid}',

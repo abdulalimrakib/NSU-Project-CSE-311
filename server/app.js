@@ -12,7 +12,15 @@ app.use(cors({
 }))
 app.use(cookieParser());
 
+require("./config/table");
 
+const userRouter = require("./routes/user.routes")
+const jobRouter = require("./routes/job.routes")
+const applicationRouter = require("./routes/application.routes")
+
+app.use("/api/user", userRouter);
+app.use("/api/job", jobRouter);
+app.use("/api/application", applicationRouter);
 
 
 
