@@ -35,7 +35,6 @@ const getAllJobs = async (req, res) => {
 };
 
 const postJob = async (req, res) => {
-  console.log(req.user.uid);
   const responseData = {
     status: "failed",
     message: MSG_DATA_INSUFFICIENT_ERROR,
@@ -46,11 +45,8 @@ const postJob = async (req, res) => {
       title,
       description,
       location,
-      salary,
       salaryFrom,
       salaryTo,
-      tag,
-      expired,
     } = req.body;
 
     if (!title || !description || !location) {
@@ -62,14 +58,9 @@ const postJob = async (req, res) => {
       title,
       description,
       location,
-      salary,
       salaryFrom,
       salaryTo,
-      tag,
-      expired,
     });
-
-    console.log(job);
     if (!job) throw Error(MSG_INTERNAL_ERROR);
 
     responseData.status = "success";
@@ -196,4 +187,41 @@ const deleteJob = async (req, res) => {
   }
 };
 
-module.exports = { getAllJobs, postJob, getMyJobs, updateJob, deleteJob };
+const jobDetails = async (req, res) => {
+  const responseData = {
+    status: "failed",
+  };
+
+  try {
+    const { jid } = req.params;
+
+    const selectQuery = `SELECT * FROM Job j,recruiter r WHERE j.addedBy = r.uid and j.jid = ${jid}`;
+
+    const details = await new Promise((resolve) => {
+      database.query(selectQuery, (error, result) => {
+        if (error) throw error;
+        resolve(result);
+      });
+    });
+
+    if (!details) throw Error(MSG_INTERNAL_ERROR);
+
+    responseData.status = "success";
+    responseData.details = details;
+
+    // console.log(responseData);
+  } catch (error) {
+    responseData.message = error.message;
+  } finally {
+    res.json(responseData);
+  }
+};
+
+module.exports = {
+  getAllJobs,
+  postJob,
+  getMyJobs,
+  updateJob,
+  deleteJob,
+  jobDetails,
+};

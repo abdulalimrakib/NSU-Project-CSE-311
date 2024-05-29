@@ -1,0 +1,67 @@
+
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+
+}
+
+.apply_box {
+    max-width: 600px;
+    padding: 20px;
+    background-color: white;
+    margin: 0 auto;
+    margin-top: 50px;
+    box-shadow: 4px 3px 5px rgba(1, 1,1, 0.1);
+    border-radius: 10px;
+
+}
+
+.form_container{
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+
+}
+
+.from_control{
+    display: flex;
+    flex-direction: column ;
+}
+
+.postJob_label{
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.postJob_input,.postjob_textarea 
+{
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.button_container{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+}
+
+.post-job-button{
+    background-color: green ;
+    border-radius: 8px;
+    padding: 5px 10px;
+    color: white;
+    transition: 0.3s ease-in;
+}
+
+.post-job-button:hover{
+    background-color: white;
+    border: 2px solid red;
+    color: black;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+}
