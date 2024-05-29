@@ -1,4 +1,4 @@
-const database = require("../config/DBConfig")
+const database = require("../config/DBConfig");
 
 const createAccount = async (accountData) => {
   const query = `INSERT INTO Account (email, password, token) 

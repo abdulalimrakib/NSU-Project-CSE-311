@@ -1,28 +1,45 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import exios from "axios";
+import axios from "axios";
 
 const Register = () => {
   const navigate = useNavigate();
 
-  const [formData, setFromData] = useState({});
+  const [formData, setFormData] = useState({});
+  const [showRecruiterFields, setShowRecruiterFields] = useState(false);
+  const [showCandidateFields, setShowCandidateFields] = useState(false);
 
   const handleChange = (e) => {
-    setFromData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+
+    if (name === "userType" && value === "recruiter") {
+      setShowRecruiterFields(true);
+    } 
+    if(name === "userType" && (value === "" || value === "candidate")) {
+      setShowRecruiterFields(false);
+    }
+    if (name === "userType" && value === "candidate") {
+      setShowCandidateFields(true);
+    } 
+    if(name === "userType" && (value === "" || value === "recruiter")) {
+      setShowCandidateFields(false);
+    }
   };
 
   const postData = async (e) => {
     e.preventDefault();
     try {
-      await exios.post("/api/user/register", formData).then((res) => {
+      await axios.post("/api/user/register", formData).then((res) => {
         if (res?.data?.status === "failed") {
           throw new Error("Not enough data, Please fill all the fields");
         } else {
           navigate("/login");
+          alert('successfully registered')
         }
       });
     } catch (error) {
-      console.log(error.message);
+      alert(error.message);
     }
   };
 
@@ -71,10 +88,7 @@ const Register = () => {
         </div>
         <div>
           <label htmlFor="userType">Role: </label>
-          <select
-            name="userType"
-            onChange={handleChange}
-          >
+          <select name="userType" onChange={handleChange}>
             <option value="">Select Role</option>
             <option value="candidate">Candidate</option>
             <option value="recruiter">Recruiter</option>
@@ -100,56 +114,64 @@ const Register = () => {
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label htmlFor="position">Position: </label>
-          <input
-            type="text"
-            name="position"
-            placeholder=""
-            className=""
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="company">Company name : </label>
-          <input
-            type="text"
-            name="company"
-            placeholder=""
-            className=""
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="dob">Date of birth : </label>
-          <input
-            type="date"
-            name="dob"
-            placeholder=""
-            className=""
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="highestEducation">Highest education : </label>
-          <input
-            type="text"
-            name="highestEducation"
-            placeholder=""
-            className=""
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="experience">Experience : </label>
-          <input
-            type="number"
-            name="experience"
-            placeholder=""
-            className=""
-            onChange={handleChange}
-          />
-        </div>
+        {showRecruiterFields && (
+          <>
+            <div>
+              <label htmlFor="position">Position: </label>
+              <input
+                type="text"
+                name="position"
+                placeholder=""
+                className=""
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="company">Company name : </label>
+              <input
+                type="text"
+                name="company"
+                placeholder=""
+                className=""
+                onChange={handleChange}
+              />
+            </div>
+          </>
+        )}
+        {showCandidateFields && (
+          <>
+            <div>
+              <label htmlFor="dob">Date of birth : </label>
+              <input
+                type="date"
+                name="dob"
+                placeholder=""
+                className=""
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="highestEducation">Highest education : </label>
+              <input
+                type="text"
+                name="highestEducation"
+                placeholder=""
+                className=""
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="experience">Experience : </label>
+              <input
+                type="number"
+                name="experience"
+                placeholder=""
+                className=""
+                onChange={handleChange}
+              />
+            </div>
+          </>
+        )}
         <button>Register</button>
       </form>
     </>
