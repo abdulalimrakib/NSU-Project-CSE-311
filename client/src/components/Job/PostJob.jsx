@@ -3,6 +3,7 @@ import "../../../public/postJob.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
 const PostJob = () => {
   const [formData, setFormData] = useState({});
   console.log(formData);

@@ -89,37 +89,6 @@ const Login = () => {
         <div className="div-clear"></div>
       </form>
     </div>
-    /* <h3>Login</h3>
-      <form onSubmit={postData}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            className=""
-            placeholder=""
-            onChange={handleChange}
-          />
-        </div>
-
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            className=""
-            placeholder=""
-            onChange={handleChange}
-          />
-        </div>
-
-        <button> Login </button>
-        <div>
-          <p>Do you have an account?</p>
-          <Link to={"/register"}>Register</Link>
-        </div>
-      </form>
-    </div> */
   );
 };
 
