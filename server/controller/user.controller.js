@@ -25,6 +25,7 @@ const register = async (req, res) => {
 
   try {
     const user = req.body;
+    // console.log(user);
     if (!user) throw new Error(MSG_DATA_INSUFFICIENT_ERROR);
 
     const { firstName, lastName, email, userType, mobile, address, password } =
@@ -150,6 +151,10 @@ const login = async (req, res) => {
       });
     });
 
+    if (!user1) throw Error(MSG_INVALID_CREDS);
+    const isUserValid = isPasswordValid(password, user1.password);
+    if (!isUserValid) throw Error(MSG_INVALID_CREDS);
+
     const query2 = `SELECT * FROM User
     WHERE uid = '${user1.uid}'`;
 
@@ -161,20 +166,15 @@ const login = async (req, res) => {
       });
     });
 
-    const user = {...user1, ...user2}
+    const user = { ...user1, ...user2 };
     const response = {
-      uid: 5,
-      email: 'user4@gmail.com',
-      token: '5FgQzXDISk',
-      name: 'user4 user4',
-      mobile: 1234567890,
-      role: 'candidate',
-      address: 'Bangladesh'
-    }
-
-    if (!user) throw Error(MSG_INVALID_CREDS);
-    const isUserValid = isPasswordValid(password, user.password);
-    if (!isUserValid) throw Error(MSG_INVALID_CREDS);
+      email: user.email,
+      token: user.token,
+      name: user.name,
+      mobile: user.mobile,
+      role: user.role,
+      address: user.address,
+    };
 
     responseData.status = "success";
     responseData.message = MSG_LOGIN_SUCCESS;
@@ -183,7 +183,6 @@ const login = async (req, res) => {
       token: user.token,
       uid: user.uid,
     };
-
   } catch (error) {
     responseData.status = "failed";
     responseData.message = error.message;
@@ -202,7 +201,9 @@ const logout = (req, res) => {
   };
 
   try {
-    res.clearCookie("token").json({ message: "Successfully signed out!" });
+    res
+      .clearCookie("token")
+      .json({ message: "Successfully signed out!", status: "success" });
   } catch (error) {
     res.json(responseData);
   }

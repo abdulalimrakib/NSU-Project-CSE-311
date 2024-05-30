@@ -1,16 +1,18 @@
-import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Home from '../components/home/Home'
-import Login from '../components/auth/Login'
-import Register from '../components/auth/Register'
-import NotFound from '../components/error/NotFound'
-import Navbar from '../components/layouts/Navbar'
-import Footer from '../components/layouts/Footer'
-import AllJobs from '../components/Job/AllJobs'
-import MyJobs from '../components/Job/MyJobs'
-import PostJob from '../components/Job/PostJob'
-import MyApplications from '../components/application/MyApplications'
-import ApplicantsApplications from '../components/application/ApplicantsApplications'
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "../components/home/Home";
+import Login from "../components/auth/Login";
+import Register from "../components/auth/Register";
+import NotFound from "../components/error/NotFound";
+import Navbar from "../components/layouts/Navbar";
+import Footer from "../components/layouts/Footer";
+import AllJobs from "../components/Job/AllJobs";
+import MyJobs from "../components/Job/MyJobs";
+import PostJob from "../components/Job/PostJob";
+import MyApplications from "../components/application/MyApplications";
+import ApplicantsApplications from "../components/application/ApplicantsApplications";
+import JobDetails from "../components/Job/JobDetails";
+import Application from "../components/application/Application";
 
 const Index = () => {
   return (
@@ -18,20 +20,25 @@ const Index = () => {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/job/all' element={<AllJobs />} />
-          <Route path='/job/me' element={<MyJobs />} />
-          <Route path='/job/post' element={<PostJob />} />
-          <Route path='/application/me' element={<MyApplications />} />
-          <Route path='/application/applicants' element={<ApplicantsApplications />} />
-          <Route path='*' element={<NotFound />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/job/all" element={<AllJobs />} />
+          <Route path="/job/me" element={<MyJobs />} />
+          <Route path="/job/post" element={<PostJob />} />
+          <Route path="/job/:id" element={<JobDetails />} />
+          <Route path="/application/:id" element={<Application />} />
+          <Route path="/application/me" element={<MyApplications />} />
+          <Route
+            path="/application/reqruiter/:jid"
+            element={<ApplicantsApplications />}
+          />
+          <Route path="*" element={<NotFound />} />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
     </div>
-  )
-}
+  );
+};
 
-export default Index
+export default Index;

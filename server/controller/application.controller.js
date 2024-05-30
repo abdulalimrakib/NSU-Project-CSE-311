@@ -40,8 +40,8 @@ const recruiterGetApplicants = async (req, res) => {
     if (applications) {
       job.applications = await Promise.all(
         applications.map(async (application) => {
-          const userQuery = `SELECT * FROM User
-          WHERE uid = '${application.uid}'`;
+          const userQuery = `SELECT * FROM User u, Account acc
+          WHERE u.uid = '${application.uid}' and acc.uid = '${application.uid}'`;
           const user = await new Promise((resolve) => {
             database.query(userQuery, (error, result) => {
               if (error) throw error;
@@ -86,10 +86,10 @@ const applicantGetApplicants = async (req, res) => {
 
   try {
     const { uid } = req.user;
-    console.log(uid);
+    // console.log(uid);
 
-    const query = `SELECT * FROM Application
-      WHERE uid='${uid}'`;
+    const query = `SELECT * FROM Application a, User u, Account acc
+      WHERE a.uid ='${uid}' and u.uid = '${uid}' and acc.uid = '${uid}'`;
 
     const applications = await new Promise((resolve) => {
       database.query(query, (error, result) => {
@@ -99,7 +99,6 @@ const applicantGetApplicants = async (req, res) => {
     });
 
     responseData.status = "success";
-    responseData.message = "";
     responseData.data = applications;
   } catch (error) {
     responseData.status = "failed";
@@ -152,14 +151,17 @@ const postApllication = async (req, res) => {
   };
   try {
     const { jid } = req.params;
-    console.log(jid);
-    console.log(req.user.uid);
+    const {message} = req.body;
+
+    if (!message) {
+      throw new Error(MSG_DATA_INSUFFICIENT_ERROR);
+    }
 
     const query = `INSERT INTO Application (jid, uid, message) 
       VALUES (
         '${jid}', 
         '${req.user.uid}',
-        '${req.body.message}'
+        '${message}'
       )
     `;
 
