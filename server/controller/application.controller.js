@@ -88,8 +88,8 @@ const applicantGetApplicants = async (req, res) => {
     const { uid } = req.user;
     // console.log(uid);
 
-    const query = `SELECT * FROM Application a, User u, Account acc
-      WHERE a.uid ='${uid}' and u.uid = '${uid}' and acc.uid = '${uid}'`;
+    const query = `SELECT * FROM Application a, User u, Account acc, job j
+      WHERE a.uid ='${uid}' and u.uid = '${uid}' and acc.uid = '${uid}' and j.jid = a.jid`;
 
     const applications = await new Promise((resolve) => {
       database.query(query, (error, result) => {
